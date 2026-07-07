@@ -1,0 +1,38 @@
+Here's the clean list to work through, in order:
+Custom Validation Assignments
+
+1. @AllowedEmailDomain — parameterized constraint
+Only allow emails from specific domains, configurable per usage:
+java@AllowedEmailDomain(domains = {"gmail.com", "outlook.com"})
+private String email;
+Introduces: constraint attributes + initialize() method.
+
+
+2. @FieldsMatch — class-level / cross-field validation
+Add emailConfirmation to UserRequest; validate it matches email.
+Introduces: @Target(TYPE), validating a whole object instead of one field.
+
+
+3. @UniqueEmail — validator with a Spring-managed dependency
+Reject registration if the email already exists in the DB.
+Introduces: @Component validators, constructor-injecting UserRepository, Spring resolving validators from the app context instead of instantiating them by hand.
+
+
+4. Composed constraint — bundling multiple rules into one
+Create @ValidPassword combining @NotBlank + @Size(min=8) + a custom "must contain a digit" rule, reported as a single error.
+Introduces: constraint composition, @ReportAsSingleViolation.
+
+
+5. @UniqueElements — validating a collection
+Add List<String> nicknames to UserRequest; reject duplicates (case-insensitive).
+Introduces: ConstraintValidator<A, List<String>>, validating collection contents.
+
+
+6. Method-level validation — validating a @RequestParam directly
+Add GET /api/users/search?minId=0; minId must be @Positive.
+Introduces: @Validated on the controller class, ConstraintViolationException (new exception type needing its own handler in GlobalExceptionHandler).
+
+
+7. Validation groups — conditional validation
+Make email required on create but optional on a future update endpoint.
+Introduces: marker interfaces (OnCreate, OnUpdate), groups = attribute, @Validated(OnCreate.class).
