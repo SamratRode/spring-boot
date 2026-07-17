@@ -38,4 +38,5 @@ Make email required on create but optional on a future update endpoint.
 Introduces: marker interfaces (OnCreate, OnUpdate), groups = attribute, @Validated(OnCreate.class).
 
 Custom annotation examples in the demo folder
-link:
+link: https://github.com/SamratRode/demo/tree/main
+
